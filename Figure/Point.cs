@@ -15,5 +15,9 @@ namespace Figure
             CoordinateX = coordinateX;
             CoordinateY = coordinateY;
         }
+        public override string ToString()
+        {
+            return "("+CoordinateX+","+CoordinateY+")";
+        }
     }
 }

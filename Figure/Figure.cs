@@ -15,9 +15,10 @@ namespace Figure
         public Figure(List<Point> Points)
         {
             this.Points = Points;
+            this.FindCenter();
             this.FindArea();
             this.FindPerimeter();
-            this.FindCenter();
+            
         }
         public abstract void FindArea();
         public abstract void FindPerimeter();
@@ -25,6 +26,7 @@ namespace Figure
         public abstract void MoveFigure(double X, double Y);
         public abstract void RotateFigure(double Degree);
         public abstract void ScaleFigure(double Scale);
+        public abstract override string ToString();
         
     }
 }

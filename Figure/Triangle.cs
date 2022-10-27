@@ -15,14 +15,32 @@ namespace Figure
 
         public Triangle(List<Point> Points) : base(Points) { }
 
+        /*public void FindSides(out double SideA, out double SideB)
+        {
+            SideA = Math.Sqrt((Points[0].CoordinateX - Points[1].CoordinateX) * (Points[0].CoordinateX - Points[1].CoordinateX)
+                + (Points[0].CoordinateY - Points[1].CoordinateY) * (Points[0].CoordinateY - Points[1].CoordinateY));
+            SideB = Math.Sqrt((Points[3].CoordinateX - Points[2].CoordinateX) * (Points[3].CoordinateX - Points[2].CoordinateX)
+                + (Points[3].CoordinateY - Points[2].CoordinateY) * (Points[3].CoordinateY - Points[2].CoordinateY));
+        }*/
 
+        public void FindSides()
+        {
+            SideA = Math.Sqrt((Points[0].CoordinateX - Points[1].CoordinateX) * (Points[0].CoordinateX - Points[1].CoordinateX)
+                + (Points[0].CoordinateY - Points[1].CoordinateY) * (Points[0].CoordinateY - Points[1].CoordinateY));
+            SideB = Math.Sqrt((Points[2].CoordinateX - Points[1].CoordinateX) * (Points[2].CoordinateX - Points[1].CoordinateX)
+                + (Points[2].CoordinateY - Points[1].CoordinateY) * (Points[2].CoordinateY - Points[1].CoordinateY));
+            SideB = Math.Sqrt((Points[2].CoordinateX - Points[0].CoordinateX) * (Points[2].CoordinateX - Points[0].CoordinateX)
+                + (Points[2].CoordinateY - Points[0].CoordinateY) * (Points[2].CoordinateY - Points[0].CoordinateY));
+        }
         public override void FindArea()
         {
+            FindSides();
             double S=(SideA+SideB+SideC)/2;
             this.Area = Math.Sqrt(S * (S - SideA) * (S - SideB) * (S - SideC));
         }
         public override void FindPerimeter()
         {
+            FindSides();
             Perimeter=SideA+SideB+SideC;
         }
         public override void FindCenter()
@@ -60,9 +78,9 @@ namespace Figure
 
             }
         }
-       /* public override string ToString()
+        public override string ToString()
         {
-
-        }*/
+            return $"{nameof(Rectangle)} Sides: {SideA},{SideB}, {SideC} Area: {Area} Perimeter: {Perimeter}";
+        }
     }
 }

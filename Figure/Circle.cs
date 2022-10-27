@@ -9,7 +9,7 @@ namespace Figure
     internal class Circle : Figure
     {
         public double Radius { get; set; }
-        public Circle(List<Point> Points) : base(Points) { FindRadius(); }
+        public Circle(List<Point> Points) : base(Points) {  }
         public void FindRadius()
         {
             this.Radius = Math.Sqrt((Points[0].CoordinateX - Points[1].CoordinateX) * (Points[0].CoordinateX - Points[1].CoordinateX)
@@ -17,10 +17,12 @@ namespace Figure
         }
         public override void FindArea()
         {
+            FindRadius();
             this.Area = Math.PI * Radius * Radius;
         }
         public override void FindPerimeter()
         {
+            FindRadius();
             this.Perimeter = 2 * Math.PI * Radius;
         }
         public override void MoveFigure(double X, double Y)
@@ -42,11 +44,12 @@ namespace Figure
         
         public override void FindCenter()
         {
+            this.Center = new Point(this.Points[0].CoordinateX, this.Points[0].CoordinateY);
             Console.WriteLine("We already have ceneter coordinates");
         }
-       /* public override string ToString()
+        public override string ToString()
         {
-            return 
-        }*/
+            return $"{nameof(Circle)} Radius: {Radius} Area: {Area} Perimeter:{Perimeter}";
+        }
     }
 }

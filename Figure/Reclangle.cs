@@ -67,9 +67,9 @@ namespace Figure
             FindArea();
             FindPerimeter();
         }
-       /* public override string ToString()
+        public override string ToString()
         {
-            
-        }*/
+            return $"{nameof(Rectangle)} Sides: {SideA},{SideB} Area: {Area} Perimeter: {Perimeter}";   
+        }
     }
 }
