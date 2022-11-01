@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Figure
 {
+    [Serializable()]
     internal class Circle : Figure
     {
         public double Radius { get; set; }

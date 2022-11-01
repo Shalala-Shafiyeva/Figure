@@ -7,10 +7,12 @@ using Figure;
 
 namespace Figure
 {
+    [Serializable()]
     internal class Program
     {
         static void Main(string[] args)
         {
+
             #region
             /* List <Figure> figures = new List <Figure> ();
              Console.WriteLine("Please select one of the option:");
@@ -65,8 +67,8 @@ namespace Figure
                      break;
              }*/
             #endregion
-            
 
+            #region Inisialization
             //using var st = new StreamWriter(path);
             List<Figure> figures = new List<Figure>();
             Triangle tr1 = new Triangle(new List<Point>()
@@ -92,9 +94,9 @@ namespace Figure
               new Point(5,0)
             });
             figures.Add(cir1);
-            
-        
-                while (true)
+#endregion
+
+            while (true)
                 {
                     Console.WriteLine("Please select one of the following option: ");
                     Console.WriteLine("1. Show all figure\n " +
@@ -136,6 +138,7 @@ namespace Figure
         const string path = @"C:\Users\User\Desktop\Figure.txt";
         private static void SaveToFile(string path, List<Figure> figures)
         {
+            #region write to file
             /*using (StreamWriter sw = new StreamWriter(path, false))
             {
                 foreach (var fig in figures)
@@ -143,17 +146,31 @@ namespace Figure
                     sw.WriteLineAsync(fig.ToFileString());
                 }
             }*/
-
-            Stream SaveFileStream = File.Create(path);
+            #endregion
+            #region serialization
+            /*Stream SaveFileStream = File.Create(path);
             BinaryFormatter serializer = new BinaryFormatter();
-            foreach (var f in figures)serializer.Serialize(SaveFileStream, f);
+            serializer.Serialize(SaveFileStream, figures);
+            SaveFileStream.Close();*/
+            #endregion
+           //SaveFileStream.Close();
+        }
+
+        static async Task SaveToFileAsync (string path, List<Figure> figures)
+        {
+            Stream SaveFileStream = File.Create(path);
+            await JsonSerializer.SerializeAsync<List<Figure>>(SaveFileStream, figures);
+            //Console.WriteLine(json);
+            // Person? restoredPerson = Jsonserializer.Deserialize<Person>(json);
+            //SaveFileStream.Write.WriteAsync(json);
             SaveFileStream.Close();
         }
 
-    
+
 
         static List<Figure> ReadFromFile()
         {
+            #region  read from file
             /* List<Figure> figs = new List<Figure>();
              using (StreamReader sw = new StreamReader(path))
              {
@@ -165,17 +182,19 @@ namespace Figure
                      }
                  }
              }*/
-
-            Console.WriteLine("Reading saved file");
+            #endregion
+            #region deserialization
+            /*Console.WriteLine("Reading saved file");
             Stream openFileStream = File.OpenRead(path);
             BinaryFormatter desirializer = new BinaryFormatter();
-            List<Figure> figures = new List<Figure>();
-            Figure f = (Figure)desirializer.Deserialize(openFileStream);
-            figures.Add(f);
+            List<Figure> figures = (List<Figure>)desirializer.Deserialize(openFileStream);
             openFileStream.Close();
-            return figure;
+            return figures;*/
+            #endregion
+
+
         }
-        
+
         private static void ShowAllFigures(List<Figure> figures)
         {
             int i = 1;
