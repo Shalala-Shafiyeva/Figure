@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.ComTypes;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Security.Cryptography.X509Certificates;
+using Figure;
 
 namespace Figure
 {
@@ -14,6 +11,7 @@ namespace Figure
     {
         static void Main(string[] args)
         {
+            #region
             /* List <Figure> figures = new List <Figure> ();
              Console.WriteLine("Please select one of the option:");
              Console.WriteLine("1. Show all figure\n " +
@@ -66,9 +64,11 @@ namespace Figure
                      }
                      break;
              }*/
+            #endregion
+            
 
+            //using var st = new StreamWriter(path);
             List<Figure> figures = new List<Figure>();
-           // static void Initialize() { 
             Triangle tr1 = new Triangle(new List<Point>()
             {
                 new Point(0, 0),
@@ -92,67 +92,99 @@ namespace Figure
               new Point(5,0)
             });
             figures.Add(cir1);
-
-            string path = @"C:\Users\User\Desktop\Figure.txt";
-
-            //using var st = new StreamWriter(path);
-
-            while (true)
-            {
-                Console.WriteLine("Please select one of the following option: ");
-                Console.WriteLine("1. Show all figure\n " +
-                              "2. Create a figure\n " +
-                              "3. Change figure\n " +
-                              "4. Save to file\n " +
-                              "0. Exit");
-                int Choice = Convert.ToInt32(Console.ReadLine());
-
-                switch (Choice)
+            
+        
+                while (true)
                 {
-                    case 0:
-                        Environment.Exit(0);
+                    Console.WriteLine("Please select one of the following option: ");
+                    Console.WriteLine("1. Show all figure\n " +
+                                  "2. Create a figure\n " +
+                                  "3. Change figure\n " +
+                                  "4. Save to file\n " +
+                                  "5. Read from file\n" +
+                                  "0. Exit");
+                    int Choice = Convert.ToInt32(Console.ReadLine());
+
+                    switch (Choice)
+                    {
+                        case 0:
+                            SaveToFile(path, figures);
+                            Environment.Exit(0);
+                            break;
+                        case 1:
+                            ShowAllFigures(figures);
+                            break;
+                        case 2:
+                            CreateFigure(figures);
+                            break;
+                        case 3:
+                            ChangeFigure(figures);
+                            break;
+                        case 4:
+                            SaveToFile(path, figures);
+                            break;
+                        case 5:
+                            ReadFromFile();
+                            break;
+                        default:
+                            Console.WriteLine("Please input correct option!");
                         break;
-                    case 1:
-                        ShowAllFigures(figures);
-                        break;
-                    case 2:
-                        CreateFigure(figures);
-                        break;
-                    case 3:
-                        ChangeFigure(figures);
-                        break;
-                    case 4:
-                        SaveToFile(path, figures);
-                        /*string txt;
-                        while ((txt = st.ReadLine()) != null)
-                        {
-                            Console.WriteLine(txt);
-                        }*/
-                        break;
-                    default:
-                        Console.WriteLine("Please input correct option!");
-                        break;
+                    }
                 }
             }
-        }
 
+        const string path = @"C:\Users\User\Desktop\Figure.txt";
         private static void SaveToFile(string path, List<Figure> figures)
         {
-            using var sw = new StreamWriter(path, true);
-            foreach (var line in figures)
+            /*using (StreamWriter sw = new StreamWriter(path, false))
             {
-                sw.WriteAsync(line.ToString());
-            }
+                foreach (var fig in figures)
+                {
+                    sw.WriteLineAsync(fig.ToFileString());
+                }
+            }*/
+
+            Stream SaveFileStream = File.Create(path);
+            BinaryFormatter serializer = new BinaryFormatter();
+            foreach (var f in figures)serializer.Serialize(SaveFileStream, f);
+            SaveFileStream.Close();
         }
 
+    
+
+        static List<Figure> ReadFromFile()
+        {
+            /* List<Figure> figs = new List<Figure>();
+             using (StreamReader sw = new StreamReader(path))
+             {
+                 {
+                     while (!sw.EndOfStream)
+                     {
+                         var line = sw.ReadLine();
+                         Console.WriteLine(line);
+                     }
+                 }
+             }*/
+
+            Console.WriteLine("Reading saved file");
+            Stream openFileStream = File.OpenRead(path);
+            BinaryFormatter desirializer = new BinaryFormatter();
+            List<Figure> figures = new List<Figure>();
+            Figure f = (Figure)desirializer.Deserialize(openFileStream);
+            figures.Add(f);
+            openFileStream.Close();
+            return figure;
+        }
+        
         private static void ShowAllFigures(List<Figure> figures)
         {
+            int i = 1;
             foreach (var fig in figures)
             {
-                fig.FindCenter();
-                fig.FindArea();
-                fig.FindPerimeter();
-                Console.WriteLine(fig.ToString());
+                //fig.FindCenter();
+                //fig.FindArea();
+                //fig.FindPerimeter();
+                Console.WriteLine(++i + ". " + fig);
             }
         }
 
@@ -184,6 +216,10 @@ namespace Figure
         private static void ChangeFigure(List<Figure> figures)
         {
             Console.WriteLine("Please select figure which one you want to change: ");
+            Console.WriteLine("1. Triagle\n" +
+                              "2. Rectangle\n" +
+                              "3. Circle");
+            ShowAllFigures(figures);
             int figchoi = Convert.ToInt32(Console.ReadLine());
             Console.WriteLine("Please select one of the following option to change figure: ");
             Console.WriteLine("1. Move figure\n " +
@@ -277,5 +313,5 @@ namespace Figure
             return circle;
         }
 
-    } 
+    }
 }

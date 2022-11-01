@@ -45,11 +45,15 @@ namespace Figure
         public override void FindCenter()
         {
             this.Center = new Point(this.Points[0].CoordinateX, this.Points[0].CoordinateY);
-            Console.WriteLine("We already have ceneter coordinates");
         }
         public override string ToString()
         {
-            return $"{nameof(Circle)} Radius: {Radius} Area: {Area} Perimeter:{Perimeter}";
+            return $"{nameof(Circle)} Radius: {Radius} Area: {Area} Perimeter:{Perimeter} Center: { Points[0].CoordinateX}, {Points[0].CoordinateY}";
+        }
+
+        public override string ToFileString()
+        {
+            return $"{nameof(Circle)} Points: {this.Points[0]}, {this.Points[1]}; Area: {Area} Perimeter:{Perimeter} Center: {Points[0].CoordinateX}, {Points[0].CoordinateY}";
         }
     }
 }

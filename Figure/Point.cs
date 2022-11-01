@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Figure
 {
+    [Serializable()]
     internal class Point
     {
         public double CoordinateX { get; set; }

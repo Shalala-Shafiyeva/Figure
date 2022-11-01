@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Figure
 {
+    [Serializable()]
     internal class Triangle: Figure
     {
        
@@ -25,12 +26,19 @@ namespace Figure
 
         public void FindSides()
         {
-            SideA = Math.Sqrt((Points[0].CoordinateX - Points[1].CoordinateX) * (Points[0].CoordinateX - Points[1].CoordinateX)
-                + (Points[0].CoordinateY - Points[1].CoordinateY) * (Points[0].CoordinateY - Points[1].CoordinateY));
-            SideB = Math.Sqrt((Points[2].CoordinateX - Points[1].CoordinateX) * (Points[2].CoordinateX - Points[1].CoordinateX)
-                + (Points[2].CoordinateY - Points[1].CoordinateY) * (Points[2].CoordinateY - Points[1].CoordinateY));
-            SideB = Math.Sqrt((Points[2].CoordinateX - Points[0].CoordinateX) * (Points[2].CoordinateX - Points[0].CoordinateX)
-                + (Points[2].CoordinateY - Points[0].CoordinateY) * (Points[2].CoordinateY - Points[0].CoordinateY));
+            double lengthX, lengthY;
+            lengthX = Points[0].CoordinateX - Points[1].CoordinateX;
+            lengthY = Points[0].CoordinateY - Points[1].CoordinateY;
+            SideA = Math.Sqrt((lengthX * lengthX) + (lengthY * lengthY));
+
+            lengthX = Points[2].CoordinateX - Points[1].CoordinateX;
+            lengthY = Points[2].CoordinateY - Points[1].CoordinateY;
+            SideB = Math.Sqrt((lengthX * lengthX) + (lengthY * lengthY));
+
+            lengthX = Points[2].CoordinateX - Points[0].CoordinateX;
+            lengthY = Points[2].CoordinateY - Points[0].CoordinateY;
+            SideC = Math.Sqrt((lengthX * lengthX) + (lengthY * lengthY));
+            
         }
         public override void FindArea()
         {
@@ -80,7 +88,12 @@ namespace Figure
         }
         public override string ToString()
         {
-            return $"{nameof(Rectangle)} Sides: {SideA},{SideB}, {SideC} Area: {Area} Perimeter: {Perimeter}";
+            return $"{nameof(Triangle)} Sides:{SideA},{SideB},{SideC} Area:{Area} Perimeter:{Perimeter}";
+        }
+
+        public override string ToFileString()
+        {
+            return $"{nameof(Circle)} Points: {this.Points[0]}, {this.Points[1]}, {this.Points[2]}; Area: {Area} Perimeter:{Perimeter} Center: {Points[0].CoordinateX}, {Points[0].CoordinateY}";
         }
     }
 }

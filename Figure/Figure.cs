@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Figure
 {
+    [Serializable()]
     internal abstract class Figure 
     {
         public double Area { get; protected set; }
@@ -27,6 +28,7 @@ namespace Figure
         public abstract void RotateFigure(double Degree);
         public abstract void ScaleFigure(double Scale);
         public abstract override string ToString();
-        
+        public abstract string ToFileString();
+      
     }
 }

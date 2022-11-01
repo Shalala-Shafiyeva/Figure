@@ -7,29 +7,34 @@ using System.Threading.Tasks;
 
 namespace Figure
 {
+    [Serializable()]
     internal class Rectangle : Figure
     {
       
         public double SideA { get; set; }
         public double SideB { get; set; }
         public Rectangle (List<Point> Points) : base(Points) { }
-        public void FindSides(out double SideA, out double SideB)
+        public void FindSides()
         {
-            SideA= Math.Sqrt((Points[0].CoordinateX - Points[1].CoordinateX) * (Points[0].CoordinateX - Points[1].CoordinateX)
-                + (Points[0].CoordinateY - Points[1].CoordinateY) * (Points[0].CoordinateY - Points[1].CoordinateY));
-            SideB = Math.Sqrt((Points[3].CoordinateX - Points[2].CoordinateX) * (Points[3].CoordinateX - Points[2].CoordinateX)
-                + (Points[3].CoordinateY - Points[2].CoordinateY) * (Points[3].CoordinateY - Points[2].CoordinateY));
+            double lengthX, lengthY;
+            lengthX = Points[0].CoordinateX - Points[1].CoordinateX;
+            lengthY = Points[0].CoordinateY - Points[1].CoordinateY;
+            SideA = Math.Sqrt((lengthX * lengthX) + (lengthY * lengthY));
+
+            lengthX = Points[2].CoordinateX - Points[1].CoordinateX;
+            lengthY = Points[2].CoordinateY - Points[1].CoordinateY;
+            SideB = Math.Sqrt((lengthX * lengthX) + (lengthY * lengthY));
         }
         public override void FindArea()
         {
-            double SideA, SideB;
-            FindSides(out SideA, out SideB);
+            
+            FindSides();
             Area = SideA * SideB;
         }
         public override void FindPerimeter()
         {
-            double SideA, SideB;
-            FindSides(out SideA, out SideB);
+           
+            FindSides();
             Perimeter = (SideA + SideB) * 2;
         }
 
@@ -69,7 +74,12 @@ namespace Figure
         }
         public override string ToString()
         {
-            return $"{nameof(Rectangle)} Sides: {SideA},{SideB} Area: {Area} Perimeter: {Perimeter}";   
+            return $"{nameof(Rectangle)} Sides: {SideA},{SideB}  Area:{Area} Perimeter:{Perimeter}";   
+        }
+
+        public override string ToFileString()
+        {
+            return $"{nameof(Circle)} Points: {this.Points[0]}, {this.Points[1]}, {this.Points[2]}, {this.Points[3]}; Area: {Area} Perimeter:{Perimeter} Center: {Points[0].CoordinateX}, {Points[0].CoordinateY}";
         }
     }
 }
