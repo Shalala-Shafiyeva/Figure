@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Cryptography.X509Certificates;
+using System.Xml;
 using Figure;
 
 namespace Figure
@@ -154,21 +155,31 @@ namespace Figure
             SaveFileStream.Close();*/
             #endregion
            //SaveFileStream.Close();
+           //open file
+           TextWriter textWriter = new StreamWriter(path);
+            //create serializer with settings: first hold(write in file) all names of figures;
+            ////second разбивает все содержимое файла по полям и вложенным классам
+            Newtonsoft.Json.JsonSerializer jsonSerializer = Newtonsoft.Json.JsonSerializer.Create(new JsonSerializerSetting
+            {
+                TypeNameHandling = TypeNameHandling.Object,
+                Formatting = Formatting.Indended
+            });
+                jsonSerializer.Serialize(textWriter, figures);
+            textWriter.Close();
         }
 
-        static async Task SaveToFileAsync (string path, List<Figure> figures)
+        /*static async Task SaveToFileAsync (string path, List<Figure> figures)
         {
             Stream SaveFileStream = File.Create(path);
             await JsonSerializer.SerializeAsync<List<Figure>>(SaveFileStream, figures);
             //Console.WriteLine(json);
-            // Person? restoredPerson = Jsonserializer.Deserialize<Person>(json);
-            //SaveFileStream.Write.WriteAsync(json);
+            
             SaveFileStream.Close();
-        }
+        }*/
 
 
 
-        static List<Figure> ReadFromFile()
+        static async List<Figure> ReadFromFile()
         {
             #region  read from file
             /* List<Figure> figs = new List<Figure>();
@@ -184,15 +195,25 @@ namespace Figure
              }*/
             #endregion
             #region deserialization
-            /*Console.WriteLine("Reading saved file");
-            Stream openFileStream = File.OpenRead(path);
+            Console.WriteLine("Reading saved file");
+           // Stream openFileStream = File.OpenRead(path);
             BinaryFormatter desirializer = new BinaryFormatter();
-            List<Figure> figures = (List<Figure>)desirializer.Deserialize(openFileStream);
-            openFileStream.Close();
-            return figures;*/
+           // List<Figure> figures = (List<Figure>)desirializer.Deserialize(openFileStream);
+            //openFileStream.Close();
+            //return figures;
             #endregion
+            TextReader openFileStream = new StreamReader(path);
+            Newtonsoft.Json.JsonSerializer = Newtonsoft.Json.JsonSerializer.Create(new JsonSerializerSetting
+            {
+                TypeNameHandling = TypeNameHandling.Object,
+                Formatting = Formatting.Indended
+            });
+            List<Figure> result = new List<Figure>();
+            result = (List<Figure>)jsonSerializer.Deserialize(openFileStream, result.GetType());
+            
 
-
+            openFileStream.Close();
+            return result;
         }
 
         private static void ShowAllFigures(List<Figure> figures)
