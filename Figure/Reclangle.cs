@@ -79,7 +79,7 @@ namespace Figure
 
         public override string ToFileString()
         {
-            return $"{nameof(Circle)} Points: {this.Points[0]}, {this.Points[1]}, {this.Points[2]}, {this.Points[3]}; Area: {Area} Perimeter:{Perimeter} Center: {Points[0].CoordinateX}, {Points[0].CoordinateY}";
+            return $"{nameof(Rectangle)} Points: {this.Points[0]}, {this.Points[1]}, {this.Points[2]}, {this.Points[3]}; Area: {Area} Perimeter:{Perimeter} Center: {Points[0].CoordinateX}, {Points[0].CoordinateY}";
         }
     }
 }

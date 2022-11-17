@@ -5,6 +5,8 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Cryptography.X509Certificates;
 using System.Xml;
 using Figure;
+using Newtonsoft.Json;
+using Formatting = Newtonsoft.Json.Formatting;
 
 namespace Figure
 {
@@ -159,10 +161,10 @@ namespace Figure
            TextWriter textWriter = new StreamWriter(path);
             //create serializer with settings: first hold(write in file) all names of figures;
             ////second разбивает все содержимое файла по полям и вложенным классам
-            Newtonsoft.Json.JsonSerializer jsonSerializer = Newtonsoft.Json.JsonSerializer.Create(new JsonSerializerSetting
+            Newtonsoft.Json.JsonSerializer jsonSerializer = Newtonsoft.Json.JsonSerializer.Create(new Newtonsoft.Json.JsonSerializerSettings
             {
-                TypeNameHandling = TypeNameHandling.Object,
-                Formatting = Formatting.Indended
+                TypeNameHandling = Newtonsoft.Json.TypeNameHandling.Objects,
+                Formatting = (Newtonsoft.Json.Formatting)Formatting.Indented
             });
                 jsonSerializer.Serialize(textWriter, figures);
             textWriter.Close();
@@ -176,10 +178,7 @@ namespace Figure
             
             SaveFileStream.Close();
         }*/
-
-
-
-        static async List<Figure> ReadFromFile()
+        static List<Figure> ReadFromFile()
         {
             #region  read from file
             /* List<Figure> figs = new List<Figure>();
@@ -196,21 +195,21 @@ namespace Figure
             #endregion
             #region deserialization
             Console.WriteLine("Reading saved file");
-           // Stream openFileStream = File.OpenRead(path);
+            // Stream openFileStream = File.OpenRead(path);
             BinaryFormatter desirializer = new BinaryFormatter();
-           // List<Figure> figures = (List<Figure>)desirializer.Deserialize(openFileStream);
+            // List<Figure> figures = (List<Figure>)desirializer.Deserialize(openFileStream);
             //openFileStream.Close();
             //return figures;
             #endregion
             TextReader openFileStream = new StreamReader(path);
-            Newtonsoft.Json.JsonSerializer = Newtonsoft.Json.JsonSerializer.Create(new JsonSerializerSetting
+            Newtonsoft.Json.JsonSerializer jsonSerializer = Newtonsoft.Json.JsonSerializer.Create(new Newtonsoft.Json.JsonSerializerSettings
             {
-                TypeNameHandling = TypeNameHandling.Object,
-                Formatting = Formatting.Indended
+                TypeNameHandling = TypeNameHandling.Objects,
+                Formatting = Formatting.Indented
             });
             List<Figure> result = new List<Figure>();
             result = (List<Figure>)jsonSerializer.Deserialize(openFileStream, result.GetType());
-            
+
 
             openFileStream.Close();
             return result;
